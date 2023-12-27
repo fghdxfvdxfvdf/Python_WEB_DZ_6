@@ -1,0 +1,105 @@
+Executing Query 1: -- Знайти 5 студентів із найбільшим середнім балом з усіх предметів.
+
+SELECT s.fullname, ROUND(AVG(g.grade), 2) AS average_grade
+FROM grades g
+LEFT JOIN students s ON s.id = g.student_id
+GROUP BY s.fullname
+ORDER BY average_grade DESC
+LIMIT 5;
+
+Query 1 Result: [('Carol Richardson', 7.54), ('Grant Day', 7.19), ('Richard Patterson', 7.13), ('Ebony Wallace', 7.05), ('Heather Carter', 7.04)]
+==================================================
+Executing Query 2: --Знайти студента із найвищим середнім балом з певного предмета.
+
+SELECT d.name, s.fullname, ROUND(AVG(g.grade), 2) AS average_grade
+FROM grades g
+JOIN students s ON s.id = g.student_id 
+JOIN disciplines d  ON d.id = g.discipline_id 
+WHERE d.id = 1
+GROUP BY s.fullname
+ORDER BY average_grade DESC
+LIMIT 1;
+
+Query 2 Result: [('Вища математика', 'Yvonne Horne', 10.25)]
+==================================================
+Executing Query 3: -- Знайти середній бал у групах з певного предмета.
+
+SELECT d.name, gr.name, ROUND(AVG(g.grade), 2) AS average_grade
+FROM grades g
+JOIN students s ON s.id = g.student_id
+JOIN disciplines d  ON d.id = g.discipline_id
+JOIN groups gr ON gr.id = s.group_id
+WHERE d.name = 'Історія'
+GROUP BY gr.name
+ORDER BY average_grade DESC;
+
+Query 3 Result: [('Історія', 'ЄС-97л', 7.05), ('Історія', 'КН-51', 7.02), ('Історія', 'Є331', 6.51), ('Історія', 'ТПК-155', 6.34), ('Історія', 'ПЦБ-13з', 6.17)]
+==================================================
+Executing Query 4: -- Знайти середній бал на потоці (по всій таблиці оцінок).
+
+SELECT AVG(gr.grade) AS avg_grade 
+FROM grades gr;
+
+Query 4 Result: [(6.506868131868132,)]
+==================================================
+Executing Query 5: -- Знайти які курси які читає певний викладач.
+
+SELECT d.name AS course_name, t.fullname AS teacher_name
+FROM disciplines d
+JOIN teachers t ON d.teacher_id = t.id;
+
+Query 5 Result: [('Вища математика', 'Stephen Harrison'), ('Історія', 'Richard Walsh'), ('Лінійна алгебра', 'Barbara Burns'), ('Креслення', 'William Reed'), ('Теорія ймовірності', 'Jessica Cobb'), ('Історія України', 'Jessica Cobb'), ('Англійська мова', 'Jessica Cobb'), ('Програмування', 'Barbara Burns'), ('Фізика', 'Richard Walsh'), ('Хімія', 'Jessica Cobb')]
+==================================================
+Executing Query 6: -- Знайти список студентів у певній групі.
+
+SELECT gr.name AS group_name, s.fullname AS student_name
+FROM students s 
+JOIN groups gr ON gr.id = s.group_id 
+WHERE gr.id = 3;
+
+Query 6 Result: [('ЄС-97л', 'Yvonne Horne'), ('ЄС-97л', 'Richard Patterson'), ('ЄС-97л', 'Heather Thomas'), ('ЄС-97л', 'Travis Bennett'), ('ЄС-97л', 'Stephanie Galvan'), ('ЄС-97л', 'Candice Davila'), ('ЄС-97л', 'Carol Richardson'), ('ЄС-97л', 'Michele Washington'), ('ЄС-97л', 'Rebecca Jones'), ('ЄС-97л', 'Joseph Myers'), ('ЄС-97л', 'Tracy Jones'), ('ЄС-97л', 'Dr. John Watson')]
+==================================================
+Executing Query 7: --Знайти оцінки студентів у окремій групі з певного предмета.
+
+SELECT g.grade AS grade, s.fullname AS student_name, gr.name AS group_name, d.name AS discipline_name
+FROM grades g
+JOIN students s ON g.student_id = s.id
+JOIN disciplines d ON g.discipline_id = d.id
+JOIN groups gr ON s.group_id = gr.id
+WHERE d.name = 'Історія' AND gr.name = 'Є331';
+
+Query 7 Result: [(6, 'Kayla Pham', 'Є331', 'Історія'), (12, 'Cory Smith', 'Є331', 'Історія'), (5, 'Donna Diaz', 'Є331', 'Історія'), (6, 'Cory Smith', 'Є331', 'Історія'), (1, 'James Parsons', 'Є331', 'Історія'), (11, 'Charles Williams', 'Є331', 'Історія'), (6, 'Robert James', 'Є331', 'Історія'), (6, 'Diana Hughes', 'Є331', 'Історія'), (8, 'Donna Diaz', 'Є331', 'Історія'), (6, 'James Parsons', 'Є331', 'Історія'), (9, 'Diana Hughes', 'Є331', 'Історія'), (4, 'Robert James', 'Є331', 'Історія'), (10, 'Donna Diaz', 'Є331', 'Історія'), (6, 'Grant Day', 'Є331', 'Історія'), (3, 'Cory Smith', 'Є331', 'Історія'), (8, 'Donna Diaz', 'Є331', 'Історія'), (4, 'Diana Hughes', 'Є331', 'Історія'), (3, 'James Parsons', 'Є331', 'Історія'), (4, 'Grant Day', 'Є331', 'Історія'), (10, 'Donna Diaz', 'Є331', 'Історія'), (5, 'Kayla Pham', 'Є331', 'Історія'), (12, 'James Parsons', 'Є331', 'Історія'), (12, 'Grant Day', 'Є331', 'Історія'), (7, 'Charles Williams', 'Є331', 'Історія'), (6, 'Theresa Hodge', 'Є331', 'Історія'), (5, 'Charles Williams', 'Є331', 'Історія'), (7, 'Kayla Pham', 'Є331', 'Історія'), (10, 'Diana Hughes', 'Є331', 'Історія'), (1, 'Charles Williams', 'Є331', 'Історія'), (2, 'James Parsons', 'Є331', 'Історія'), (12, 'Charles Williams', 'Є331', 'Історія'), (1, 'Donna Diaz', 'Є331', 'Історія'), (7, 'Kayla Pham', 'Є331', 'Історія'), (7, 'Donna Diaz', 'Є331', 'Історія'), (6, 'Grant Day', 'Є331', 'Історія'), (11, 'Cory Smith', 'Є331', 'Історія'), (5, 'Charles Williams', 'Є331', 'Історія'), (4, 'Theresa Hodge', 'Є331', 'Історія'), (10, 'Charles Williams', 'Є331', 'Історія'), (4, 'Charles Williams', 'Є331', 'Історія'), (3, 'Cory Smith', 'Є331', 'Історія'), (11, 'Diana Hughes', 'Є331', 'Історія'), (10, 'Charles Williams', 'Є331', 'Історія'), (11, 'Kayla Pham', 'Є331', 'Історія'), (5, 'Cory Smith', 'Є331', 'Історія'), (2, 'Charles Williams', 'Є331', 'Історія'), (11, 'Kayla Pham', 'Є331', 'Історія'), (9, 'Diana Hughes', 'Є331', 'Історія'), (9, 'James Parsons', 'Є331', 'Історія'), (1, 'Donna Diaz', 'Є331', 'Історія'), (3, 'Charles Williams', 'Є331', 'Історія'), (11, 'Grant Day', 'Є331', 'Історія'), (5, 'Diana Hughes', 'Є331', 'Історія'), (4, 'Cory Smith', 'Є331', 'Історія'), (6, 'Kayla Pham', 'Є331', 'Історія'), (1, 'Charles Williams', 'Є331', 'Історія'), (7, 'Charles Williams', 'Є331', 'Історія')]
+==================================================
+Executing Query 8: -- Знайти середній бал, який ставить певний викладач зі своїх предметів.
+
+SELECT d.name AS lesson, t.fullname AS teacher_name, 
+ROUND(AVG(g.grade), 2) AS average_grade 
+FROM grades g
+JOIN disciplines d ON d.id = g.discipline_id
+JOIN teachers t ON d.teacher_id = t.id 
+WHERE d.name = 'Історія'
+GROUP BY d.name, t.fullname
+
+Query 8 Result: [('Історія', 'Richard Walsh', 6.6)]
+==================================================
+Executing Query 9: -- Знайти список курсів, які відвідує студент.
+
+SELECT DISTINCT s.fullname, d.name
+FROM grades g
+JOIN students s ON s.id = g.student_id 
+JOIN disciplines d  ON d.id = g.discipline_id 
+WHERE s.id = 3
+
+Query 9 Result: [('Grant Day', 'Креслення'), ('Grant Day', 'Теорія ймовірності'), ('Grant Day', 'Лінійна алгебра'), ('Grant Day', 'Англійська мова'), ('Grant Day', 'Історія'), ('Grant Day', 'Фізика'), ('Grant Day', 'Вища математика'), ('Grant Day', 'Хімія'), ('Grant Day', 'Програмування'), ('Grant Day', 'Історія України')]
+==================================================
+Executing Query 10: -- Список курсів, які певному студенту читає певний викладач.
+
+SELECT DISTINCT d.name AS discipline_name, s.fullname AS student_name, t.fullname AS teacher_name
+FROM grades g
+JOIN students s ON s.id = g.student_id 
+JOIN disciplines d ON d.id = g.discipline_id 
+JOIN teachers t ON t.id = d.teacher_id 
+WHERE s.id = 3 AND t.id = 3;
+
+Query 10 Result: [('Історія', 'Grant Day', 'Richard Walsh'), ('Фізика', 'Grant Day', 'Richard Walsh')]
+==================================================
